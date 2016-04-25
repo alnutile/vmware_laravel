@@ -1,0 +1,106 @@
+---
+
+- hosts: localhost:base-ubuntu
+  vars:
+    - docroot: /home/alfrednutile/app
+    - apt_update: true
+    - github_token: db7050548e5ec8c51c83de2ca21ee02995ae5290
+    - js: true
+    - restart: true
+    - cfn_info: ''
+
+  tasks:
+    - name: Setup PHP 5.6
+      become: yes
+      apt_repository: repo='ppa:ondrej/php5-5.6'
+
+    - name: Update Apt
+      become: yes
+      apt: update_cache=yes
+      when: apt_update
+
+    - name: Install Nginx
+      become: yes
+      apt: pkg=nginx state=installed
+      register: nginxinstalled
+
+    - name: Add ubuntu user to nginx
+      become: yes
+      user: name=ubuntu shell=/bin/bash groups=www-data append=yes
+
+    - name: App Directory permission
+      become: yes
+      file: path={{ docroot }} state=directory mode=0775 owner=ubuntu group=www-data
+
+    - name: Copy Default Nginx
+      when: nginxinstalled|success
+      become: yes
+      template: src=templates/nginx_default_ubuntu.conf.j2 dest=/etc/nginx/sites-available/default owner=root group=root force=yes
+      notify:
+        - Reload Nginx
+
+    - name: Make SSL Folder
+      when: nginxinstalled|success
+      become: yes
+      file: state=directory path=/etc/nginx/ssl
+
+    - name: Copy SSL Files into Folder
+      when: nginxinstalled|success
+      become: yes
+      copy: src={{ item }} dest=/etc/nginx/ssl/
+      with_fileglob:
+        - ssl/nginx.*
+      notify:
+        - Reload Nginx
+
+    - name: Install SupervisorD
+      become: yes
+      apt: pkg=supervisor state=installed
+
+    - name: Install packages
+      become: yes
+      apt: pkg={{ item }} state=installed
+      with_items:
+        - php5
+        - php5-mysqlnd
+        - mcrypt
+        - php5-mcrypt
+        - php5-gd
+        - php5-fpm
+        - php5-cli
+        - git-all
+        - mysql-client-core-5.6
+        - php5-curl
+
+    - name: Remove Apache
+      become: yes
+      apt: pkg=apache2 state=absent
+
+    - name: install composer
+      shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin creates=/usr/local/bin/composer
+      become: yes
+      tags: composer
+
+    - name: rename composer.phar to composer
+      shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+      become: yes
+      tags: composer
+
+    - name: make composer executable
+      file: path=/usr/local/bin/composer mode=a+x state=file
+      become: yes
+      tags: composer
+
+  handlers:
+    - name: Start Nginx
+      service: name=nginx state=started
+
+    - name: Reload Nginx
+      service: name=nginx state=reloaded
+      when: restart
+
+    - name: Reload PHP php56
+      service: name=php-fpm state=restarted
+
+    - name: Reread supervisord config
+      shell: /usr/bin/supervisorctl reread

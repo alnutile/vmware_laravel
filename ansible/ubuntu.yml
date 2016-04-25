@@ -1,0 +1,68 @@
+---
+- hosts: localhost:base-ubuntu
+  vars:
+    - user: alfrednutile
+    - local: false
+    - apt_update: true
+    - slack_token: T025L7FG8/B0LS8P62G/PRc429X0u1O5jHxYDzAI0POW
+    - cfn_info: ''
+
+  tasks:
+    - name: Install packages
+      sudo: yes
+      apt: pkg={{ item }} state=installed
+      with_items:
+        - python-pycurl
+        - composer
+
+    - name: Fix potential broken packages due to updates
+      sudo: yes
+      shell: apt-get -f install
+      tags:
+        - skip_ansible_lint
+
+    - name: Add PPA
+      sudo: yes
+      apt_repository: repo='ppa:ansible/ansible' state=present
+
+    - name: Setup Apt and Latest Ansible
+      sudo: yes
+      apt: pkg=software-properties-common state=installed
+
+    - name: Update Apt
+      sudo: yes
+      apt: update_cache=yes
+      when: apt_update
+
+    - name: Install Ansible
+      sudo: yes
+      apt: pkg=ansible state=installed
+      when: not local
+
+    - name: Install Ansible Host
+      sudo: yes
+      copy: src=templates/hosts dest=/etc/ansible/hosts owner=root group=root force=yes directory_mode=yes
+
+    - name: Get Pip
+      sudo: yes
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/home/{{ user }} validate_certs=no
+      when: not local
+
+    - name: Install Pip
+      sudo: yes
+      command: /usr/bin/python /home/{{ user }}/get-pip.py
+      when: not local
+
+    - name: Install AWS CLI tools
+      sudo: yes
+      command: pip install awscli
+      when: not local
+
+    - name: Set Region
+      sudo: yes
+      command: aws configure set region us-east-1
+
+  handlers:
+    - name: Restart SSHD
+      sudo: yes
+      service: name=ssh state=restarted
