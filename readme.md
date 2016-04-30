@@ -5,7 +5,7 @@
   * Setup VMWare using Ubuntu 14.04
   * Make sure user has password free sudu
   * Set Network to Bridge
-  * Make sure you setup Ansible 2
+  * Make sure you setup Ansible 2 in the VM
 
 ### Sudo Setup
 
@@ -50,13 +50,17 @@ $ sudo apt-get install ansible
   * nginx_ubuntu.yml
   * mysql.yml
 
-Here is an example command
+Here is an example command, you can replace the name for any of these
 
 ~~~
 ansible-playbook -i "local," -c local ubuntu.yml
 ~~~
 
 Then nginx and mysql and you should be set
+
+## MySQL
+
+It is root/password so just keep that in mind as you go
 
 ## TODO
 Move most of this into vagrant
