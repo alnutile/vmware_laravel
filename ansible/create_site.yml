@@ -1,1 +1,30 @@
-create_site.yml
+---
+
+- hosts: localhost:base-ubuntu
+  vars:
+    - username: alfrednutile
+    - sitefolder: foo
+    - sitename: bar.dev
+
+  tasks:
+  - name: Create Error Log area 
+    become: yes
+    file: path="/var/log/nginx/{{ sitename }}-error.log" owner=root group=root state=touch
+
+  - name: Copy over Nginx File
+    become: yes
+    template: src=templates/create_site.j2 dest=/etc/nginx/sites-available/{{ sitename }} owner=root group=root force=yes
+
+  - name: Symlink
+    become: yes
+    file: src=/etc/nginx/sites-available/{{ sitename }} dest=/etc/nginx/sites-enabled/{{ sitename }} state=link
+    notify: 
+    - Reload Nginx
+
+  - name: Create the database table
+    mysql_db: name={{ sitefolder }} state=present login_user=root login_password=password
+
+  handlers:
+    - name: Reload Nginx
+      service: name=nginx state=reloaded
+
