@@ -30,5 +30,8 @@
         - ::1
         - "{{ ansible_fqdn }}"
 
+    - name: Add Homestead user for compatibility
+      mysql_user: name=homestead password=secret priv=*.*:ALL state=present login_password="{{ MySQL_root_pass }}" login_user=root
+
     - name: Removes the MySQL test database
       mysql_db: db=test state=absent login_password="{{ MySQL_root_pass }}" login_user=root

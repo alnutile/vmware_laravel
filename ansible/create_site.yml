@@ -2,7 +2,7 @@
 
 - hosts: localhost:base-ubuntu
   vars:
-    - username: alfrednutile
+    - username: ubuntu
     - sitefolder: foo
     - sitename: bar.dev
 

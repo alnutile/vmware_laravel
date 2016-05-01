@@ -35,8 +35,9 @@ Finally when you want to work on a site
 
 ## VM Setup Manual Steps
 
-  * Setup VMWare using Ubuntu 14.04
+  * Setup VMWare using Ubuntu 14.04 (username ubuntu)
   * Make sure user has passwordless sudu
+  * apt-get install openssh-server
   * Set Network to Bridge
   * Make sure you setup Ansible 2 in the VM
 
@@ -53,6 +54,23 @@ Of course @TODO alfrednutile === ubuntu like our servers
 ## Network to Bridge
 
 Under Edit in the top menu of the VM Software (VMWare) or in settings of the VM (VMWare) there is Virtual Network Manager there you will see Bridged, then just make sure it references your Wireless card.
+
+## VMWare install tools
+
+In the menu of VMWare VM click Install Tools
+
+then in the vm mkdir /mnt/foo
+
+then `mount /dev/cdrom /mnt/foo`
+
+cp /mnt/foo/VMWareTools* /opt
+
+tar xzvf VMWare*
+
+then cd vmware-tools-distrib
+
+
+
 
 ## Folder Share
 
@@ -91,6 +109,10 @@ that one needs more settings.
 ~~~
 ansible-playbook -i "local," -c local ubuntu.yml
 ~~~
+
+  * ubuntu.yml
+  * nginx.yml
+  * mmysql.yml
 
 ## MySQL
 

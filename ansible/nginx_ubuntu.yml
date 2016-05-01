@@ -2,7 +2,7 @@
 
 - hosts: localhost:base-ubuntu
   vars:
-    - docroot: /home/alfrednutile/app
+    - docroot: /home/ubuntu/Code/default
     - apt_update: true
     - github_token: db7050548e5ec8c51c83de2ca21ee02995ae5290
     - js: true
@@ -31,6 +31,12 @@
     - name: App Directory permission
       become: yes
       file: path={{ docroot }} state=directory mode=0775 owner=ubuntu group=www-data
+
+    - name: Make default area for nginx
+      file: path=/home/ubuntu/Code/default/public state=directory
+
+    - name: Make default area for nginx
+      copy: src=templates/index.html dest=/home/ubuntu/Code/default/public/index.html
 
     - name: Copy Default Nginx
       when: nginxinstalled|success
