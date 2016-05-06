@@ -15,6 +15,12 @@
         - curl
         - php5-cli
         - git
+        - npm
+        - nodejs
+
+    - name: Install Gulp
+      become: yes
+      shell: npm install --global gulp
 
     - name: Get Composer
       shell: curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
