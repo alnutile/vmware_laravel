@@ -97,14 +97,16 @@ On the VM
 Setup 2.x version
 
 ~~~
-$ sudo apt-get install software-properties-common
-$ sudo apt-add-repository ppa:ansible/ansible
-$ sudo apt-get update
-$ sudo apt-get install ansible
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
 ~~~
 
 As noted above there are several files this is how your run each one, except the `create_site.yml` since
 that one needs more settings.
+
+cd ansible and follow the below items
 
 ~~~
 ansible-playbook -i "local," -c local ubuntu.yml
@@ -129,7 +131,6 @@ ansible-playbook -i "local," -c local create_site.yml --extra-vars="sitefolder=f
 ~~~
 
 Will build our your site, database, setup your internal hosts file.
-
 
 ## Roadmap / TODO
 
