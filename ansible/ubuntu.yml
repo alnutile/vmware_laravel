@@ -18,6 +18,10 @@
         - npm
         - nodejs
 
+    - name: fix ubuntu nodejs to node
+      become: yes
+      file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+
     - name: Install Gulp
       become: yes
       shell: npm install --global gulp

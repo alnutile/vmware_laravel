@@ -28,8 +28,8 @@
       <file leaf-file-name="ubuntu.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ansible/ubuntu.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+            <state relative-caret-position="841">
+              <caret line="22" column="61" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -196,12 +196,12 @@
       <workItem from="1462067283676" duration="5335000" />
       <workItem from="1462142745689" duration="29000" />
       <workItem from="1462497554620" duration="4086000" />
-      <workItem from="1462560448911" duration="54000" />
+      <workItem from="1462560448911" duration="443000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17931000" />
+    <option name="totallyTimeSpent" value="18320000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-13" y="-13" width="2458" height="1567" extended-state="6" />
@@ -415,8 +415,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ansible/ubuntu.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        <state relative-caret-position="841">
+          <caret line="22" column="61" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
           <folding />
         </state>
       </provider>
